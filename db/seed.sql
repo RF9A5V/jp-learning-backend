@@ -92,15 +92,6 @@ INSERT INTO groupings (name) VALUES
     ('Abstract Concepts and Ideas'),
     ('Miscellaneous');
 
--- Create the kanji_groupings table for many-to-many relationship
-CREATE TABLE kanji_groupings (
-    kanji_id INTEGER,
-    grouping_id INTEGER,
-    PRIMARY KEY (kanji_id, grouping_id),
-    FOREIGN KEY (kanji_id) REFERENCES kanji(id),
-    FOREIGN KEY (grouping_id) REFERENCES groupings(id)
-);
-
 -- Insert kanji for Numbers and Counters group
 INSERT INTO kanji (character, readings_on, readings_kun, meanings, stroke_count, jlpt_level, grade_level)
 VALUES
