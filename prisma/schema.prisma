@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model groupings {
+  id              Int               @id @default(autoincrement())
+  name            String
+  kanji_groupings kanji_groupings[]
+}
+
+model hiragana {
+  id        Int    @id @default(autoincrement())
+  character String
+  romaji    String
+}
+
+model kanji {
+  id                Int                 @id @default(autoincrement())
+  character         String
+  readings_on       String?
+  readings_kun      String?
+  meanings          String?
+  stroke_count      Int?
+  jlpt_level        String?
+  grade_level       Int?
+  kanji_groupings   kanji_groupings[]
+  learning_progress learning_progress[]
+}
+
+model kanji_groupings {
+  kanji_id    Int
+  grouping_id Int
+  groupings   groupings @relation(fields: [grouping_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  kanji       kanji     @relation(fields: [kanji_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([kanji_id, grouping_id])
+}
+
+model katakana {
+  id        Int    @id @default(autoincrement())
+  character String
+  romaji    String
+}
+
+model learning_progress {
+  id            Int    @id @default(autoincrement())
+  kanji_id      Int?
+  times_seen    Int?   @default(0)
+  times_correct Int?   @default(0)
+  kanji         kanji? @relation(fields: [kanji_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
